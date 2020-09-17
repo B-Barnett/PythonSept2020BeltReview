@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ book.title }}</h1>
+        <h2>Written By: {{ book.author }}</h2>
+        <h4 style="justify-content: right;"><a href="/books">Home</a> | <a href="/books/add">Add a Book and Review</a> | <a href="/logout">Logout</a></h4>
+        <hr>
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Reviews:</h3>
+                {% for b in book.reviews.all %}
+                <h4>Rating: {{b.rating}}</h4>
+                <h4><a href="/users/{{b.user.id}}">{{b.user.alias}}</a> said: {{b.content}}</h4>
+                <h6>Posted on: {{b.created_at}}</h6>
+                {% if b.user.id == request.session.logged_in_user %}
+                <a href="/deletereview/{{b.id}}">Delete review</a>
+                {% endif %}
+                <hr>
+                {% endfor %}
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <h2>Leave your review</h2>
+                <form action="/addreview/{{book.id}}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="content">Review:</label>
+                        <textarea name="content" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Your Rating</label>
+                        <select name="rating" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

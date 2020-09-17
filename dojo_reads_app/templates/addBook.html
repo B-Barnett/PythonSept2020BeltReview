@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Add a book</h1>
+        <h4 style="float:right"><a href="/books">Home</a> | <a href="/logout">Logout</a></h4>
+        {% if messages %}
+        <ul>
+            {% for m in messages %}
+                <li>{{ m }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/books/new" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Book title</label>
+                <input class="form-control" type="text" name="title">
+            </div>
+            <div class="form-group">
+                <label for="author">Book author</label>
+                <select name="author" class="form-control">
+                    {% for a in bookauthors %}
+                    <option value="{{a.author}}">{{a.author}}</option>
+                    {% endfor %}
+                </select>
+                <p></p>
+                <input class="form-control" type="text" name="newauthor">
+            </div>
+            <div class="form-group">
+                <label for="content">Your Review</label>
+                <textarea name="content" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating">Your Rating</label>
+                <select name="rating" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>
